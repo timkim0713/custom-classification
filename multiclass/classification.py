@@ -94,8 +94,7 @@ for _ in range(nb_samples):
 
     index = next(test_generator.index_generator)
     print("??", index)
-    X_test, Y_test = test_generator._get_batches_of_transformed_samples(
-        int(index))
+    X_test, Y_test = test_generator._get_batches_of_transformed_samples(index)
     image_name = test_generator.filenames[int(index)]
 
     y_prob.append(model.predict(X_test))
@@ -112,9 +111,9 @@ print("actual class: ", actual_class)
 print("test img:", test_file)
 
 out_df = pd.DataFrame(np.vstack([predicted_class, actual_class]).T, columns=[
-                      'predicted_class', 'actual_class'])
+    'predicted_class', 'actual_class'])
 confusion_matrix = pd.crosstab(out_df['actual_class'], out_df['predicted_class'], rownames=[
-                               'Actual'], colnames=['Predicted'])
+    'Actual'], colnames=['Predicted'])
 
 
 sn.heatmap(confusion_matrix, cmap='Blues', annot=True, fmt='d')
