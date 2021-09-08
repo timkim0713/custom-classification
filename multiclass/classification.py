@@ -93,12 +93,12 @@ for _ in range(nb_samples):
     # test_file.append(image_name)
 
     index = next(test_generator.index_generator)
-    print("??", index)
     X_test, Y_test = test_generator._get_batches_of_transformed_samples(index)
     image_name = test_generator.filenames[int(index)]
 
     y_prob.append(model.predict(X_test))
     y_act.append(Y_test)
+    test_file.append(image_name)
 
 predicted_class = [list(test_generator.class_indices.keys())[
     i.argmax()] for i in y_prob]
