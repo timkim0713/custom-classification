@@ -41,32 +41,36 @@ model = tf.keras.models.load_model('model.h5')
 # Summary / Result
 
 
-
 def load(filename):
-   np_image = Image.open(filename)
-   np_image = np.array(np_image).astype('float32')/255
-   np_image = transform.resize(np_image, (224, 224, 3))
-   np_image = np.expand_dims(np_image, axis=0)
-   return np_image
+    np_image = Image.open(filename)
+    np_image = np.array(np_image).astype('float32')/255
+    np_image = transform.resize(np_image, (224, 224, 3))
+    np_image = np.expand_dims(np_image, axis=0)
+    return np_image
 
 
 def output_format(prediction):
     keys = test_generator.class_indices.keys()
-    result = list(zip(keys,prediction[0]))
+    result = list(zip(keys, prediction[0]))
     return result
+
 
 def result(prediction):
     r = output_format(prediction)
     ans_index = np.argmax(prediction)
     return r[ans_index]
 
-image = cv2.imread('c.jpg')  
 
-image_tensor = load('c.jpg')
+IMG_TESTING = 'duck_5.jpg'
+
+image = cv2.imread(IMG_TESTING)
+image_tensor = load(IMG_TESTING)
+
 prediction = model.predict(image_tensor)
 prediction_formatted = output_format(prediction)
 print(prediction_formatted)
 
-texted_image =cv2.putText(img=np.copy(image), text=str(result(prediction)), org=(0,50),fontFace=1, fontScale=1, color=(0,0,255), thickness=1)
+texted_image = cv2.putText(img=(image), text=str(result(prediction)), org=(
+    0, 50), fontFace=1, fontScale=1, color=(0, 0, 255), thickness=1)
 plt.imshow(texted_image)
 plt.show()

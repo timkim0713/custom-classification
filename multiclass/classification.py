@@ -56,12 +56,12 @@ model = Model(inputs=base_model.input, outputs=predictions)
 
 
 for layer in base_model.layers:
-    layer.trainable = True
+    layer.trainable = False
 
 model.compile(optimizer='adam', loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(train_generator, epochs=50, shuffle=True)
+model.fit(train_generator, epochs=15, shuffle=True)
 
 
 model.save('model.h5')
@@ -95,7 +95,6 @@ for _ in range(nb_samples):
     y_prob.append(model.predict(X_test))
     y_act.append(Y_test)
     test_file.append(image_name)
-
 
 predicted_class = [list(test_generator.class_indices.keys())[
     i.argmax()] for i in y_prob]
