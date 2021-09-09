@@ -11,9 +11,10 @@ import numpy as np
 from PIL import Image
 import pandas as pd
 import seaborn as sn
+from skimage import transform
+import cv2
 import os
-os.add_dll_directory(
-    "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/bin")
+
 # print(tf.__version__)
 
 # # Read Processed Data
@@ -39,45 +40,33 @@ model = tf.keras.models.load_model('model.h5')
 
 # Summary / Result
 
-filenames = test_generator.filenames
-nb_samples = len(test_generator)
-y_prob = []
-y_act = []
-test_file = []
-test_generator.reset()
-
-print(test_generator.class_indices.keys())
-index = 0
 
 
-for _ in range(nb_samples):
-
-    index = next(test_generator.index_generator)
-    X_test, Y_test = test_generator._get_batches_of_transformed_samples(index)
-    image_name = test_generator.filenames[int(index)]
-
-    y_prob.append(model.predict(X_test))
-    y_act.append(Y_test)
-    test_file.append(image_name)
-
-predicted_class = [list(test_generator.class_indices.keys())[
-    i.argmax()] for i in y_prob]
-actual_class = [list(test_generator.class_indices.keys())
-                [i.argmax()] for i in y_act]
-
-print("predicted class: ", predicted_class)
-print("actual class: ", actual_class)
-
-print("test img:", test_file)
-
-out_df = pd.DataFrame(np.vstack([predicted_class, actual_class]).T, columns=[
-    'predicted_class', 'actual_class'])
-confusion_matrix = pd.crosstab(out_df['actual_class'], out_df['predicted_class'], rownames=[
-    'Actual'], colnames=['Predicted'])
+def load(filename):
+   np_image = Image.open(filename)
+   np_image = np.array(np_image).astype('float32')/255
+   np_image = transform.resize(np_image, (224, 224, 3))
+   np_image = np.expand_dims(np_image, axis=0)
+   return np_image
 
 
-sn.heatmap(confusion_matrix, cmap='Blues', annot=True, fmt='d')
-print('test accuracy: {}'.format(
-    (np.diagonal(confusion_matrix).sum()/confusion_matrix.sum().sum()*100)))
+def output_format(prediction):
+    keys = test_generator.class_indices.keys()
+    result = list(zip(keys,prediction[0]))
+    return result
 
+def result(prediction):
+    r = output_format(prediction)
+    ans_index = np.argmax(prediction)
+    return r[ans_index]
+
+image = cv2.imread('duck_5.jpg')  
+
+image_tensor = load('duck_5.jpg')
+prediction = model.predict(image_tensor)
+prediction_formatted = output_format(prediction)
+print(prediction_formatted)
+
+texted_image =cv2.putText(img=np.copy(image), text=str(result(prediction)), org=(0,50),fontFace=1, fontScale=1, color=(0,0,255), thickness=1)
+plt.imshow(texted_image)
 plt.show()
