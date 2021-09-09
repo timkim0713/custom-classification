@@ -52,10 +52,17 @@ Ran crawling.py 5 times using the following keywords
 conda env
 
 tensorflow 2.4
+
 h5py 2.1 
+
 selenium 
+
 urllib
+
 matplotlib
+
 numpy
+
 pandas
+
 seaborn
