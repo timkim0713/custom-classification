@@ -18,7 +18,7 @@ import os
 # # Read Processed Data
 
 img_height, img_width = (224, 224)
-batch_size = 16
+batch_size = 1
 
 train_data_dir = r"processed_data/train"
 valid_data_dir = r"processed_data/val"
@@ -56,12 +56,12 @@ model = Model(inputs=base_model.input, outputs=predictions)
 
 
 for layer in base_model.layers:
-    layer.trainable = False
+    layer.trainable = True
 
 model.compile(optimizer='adam', loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(train_generator, epochs=10)
+model.fit(train_generator, epochs=50, shuffle=True)
 
 
 model.save('model.h5')
@@ -87,11 +87,6 @@ index = 0
 
 
 for _ in range(nb_samples):
-    # X_test, Y_test = test_generator.next()
-    # X_test, Y_test = test_generator._get_batches_of_transformed_samples(np.array([
-    #                                                                     index]))
-    # image_name = test_generator.filenames[index]
-    # test_file.append(image_name)
 
     index = next(test_generator.index_generator)
     X_test, Y_test = test_generator._get_batches_of_transformed_samples(index)
@@ -100,6 +95,7 @@ for _ in range(nb_samples):
     y_prob.append(model.predict(X_test))
     y_act.append(Y_test)
     test_file.append(image_name)
+
 
 predicted_class = [list(test_generator.class_indices.keys())[
     i.argmax()] for i in y_prob]

@@ -60,9 +60,9 @@ def result(prediction):
     ans_index = np.argmax(prediction)
     return r[ans_index]
 
-image = cv2.imread('duck_5.jpg')  
+image = cv2.imread('c.jpg')  
 
-image_tensor = load('duck_5.jpg')
+image_tensor = load('c.jpg')
 prediction = model.predict(image_tensor)
 prediction_formatted = output_format(prediction)
 print(prediction_formatted)
