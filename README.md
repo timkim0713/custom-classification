@@ -35,10 +35,10 @@ python classifciation.py
 
 
 
-# Example Result
+# Experiment and Result
 
 ## Crawling
-Ran crawling.py 5 times using the following keywords
+Ran crawling.py 5 times using the following keywords (for 200 images per keyword)
 
 "camel, duck, horse, penguins, puffins"
 
@@ -51,18 +51,11 @@ Ran crawling.py 5 times using the following keywords
 #### Envrionment / Used Framework and Libraries
 conda env
 
-tensorflow 2.4
-
-h5py 2.1 
-
-selenium 
-
-urllib
-
-matplotlib
-
-numpy
-
-pandas
-
-seaborn
+- tensorflow 2.4
+- h5py 2.1 
+- selenium 
+- urllib
+- matplotlib
+- numpy
+- pandas
+- seaborn
