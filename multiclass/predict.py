@@ -1,6 +1,6 @@
 from tensorflow.keras.layers import Conv2D, Flatten, Dense, MaxPool2D, BatchNormalization, GlobalAveragePooling2D
 from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
-from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img
+from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 from tensorflow.keras.applications.resnet50 import ResNet50
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Sequential
@@ -36,17 +36,24 @@ test_generator = train_datagen.flow_from_directory(test_data_dir, target_size=(
 
 
 model = tf.keras.models.load_model('model.h5')
-
+# model.compile(loss='categorical_crossentropy',
+#               optimizer='adam',
+#               metrics=['accuracy'])
 
 # Summary / Result
 
 
 def load(filename):
-    np_image = Image.open(filename)
-    np_image = np.array(np_image).astype('float32')/255
-    np_image = transform.resize(np_image, (224, 224, 3))
-    np_image = np.expand_dims(np_image, axis=0)
-    return np_image
+    img = load_img(filename, target_size=(img_width, img_height))
+    x = img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+
+    # **BELOW DOES NOT WORK; RESULTS IN WRONG PREDICTION
+    # np_image = Image.open(filename)
+    # np_image = np.array(np_image).astype('float32')/255
+    # np_image = transform.resize(np_image, (224, 224, 3))
+    # np_image = np.expand_dims(np_image, axis=0)
+    return x
 
 
 def output_format(prediction):
@@ -61,7 +68,7 @@ def result(prediction):
     return r[ans_index]
 
 
-IMG_TESTING = 'duck_5.jpg'
+IMG_TESTING = 'puff2.jpg'
 
 image = cv2.imread(IMG_TESTING)
 image_tensor = load(IMG_TESTING)
@@ -71,6 +78,6 @@ prediction_formatted = output_format(prediction)
 print(prediction_formatted)
 
 texted_image = cv2.putText(img=(image), text=str(result(prediction)), org=(
-    0, 50), fontFace=1, fontScale=1, color=(0, 0, 255), thickness=1)
+    0, 50), fontFace=1, fontScale=3, color=(0, 0, 255), thickness=3)
 plt.imshow(texted_image)
 plt.show()
