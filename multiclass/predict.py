@@ -12,7 +12,8 @@ from PIL import Image
 import pandas as pd
 import seaborn as sn
 import os
-
+os.add_dll_directory(
+    "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/bin")
 # print(tf.__version__)
 
 # # Read Processed Data
@@ -29,48 +30,11 @@ train_datagen = ImageDataGenerator(preprocessing_function=preprocess_input,
                                    shear_range=.2, zoom_range=.2, horizontal_flip=True, validation_split=.4
                                    )
 
-train_generator = train_datagen.flow_from_directory(train_data_dir, target_size=(img_height, img_width),
-                                                    batch_size=batch_size, class_mode='categorical',
-                                                    subset='training')
-
-valid_generator = train_datagen.flow_from_directory(valid_data_dir, target_size=(img_height, img_width),
-                                                    batch_size=batch_size, class_mode='categorical',
-                                                    subset='validation')
-
 test_generator = train_datagen.flow_from_directory(test_data_dir, target_size=(
     img_height, img_width), batch_size=1, class_mode='categorical', subset='validation')
 
 
-x, y = test_generator.next()
-# print(x.shape)
-
-
-# MODEL
-
-base_model = ResNet50(include_top=False, weights='imagenet')
-x = base_model.output
-x = GlobalAveragePooling2D()(x)
-x = Dense(1024, activation='relu')(x)
-predictions = Dense(train_generator.num_classes, activation='softmax')(x)
-model = Model(inputs=base_model.input, outputs=predictions)
-
-
-for layer in base_model.layers:
-    layer.trainable = False
-
-model.compile(optimizer='adam', loss='categorical_crossentropy',
-              metrics=['accuracy'])
-
-model.fit(train_generator, epochs=10)
-
-
-model.save('model.h5')
-
-test_loss, test_acc = model.evaluate(test_generator, verbose=2)
-print("Test Accuracy: ", test_acc)
-
-
-# model = tf.keras.models.load_model('model.h5')
+model = tf.keras.models.load_model('model.h5')
 
 
 # Summary / Result
@@ -82,16 +46,11 @@ y_act = []
 test_file = []
 test_generator.reset()
 
-print(train_generator.class_indices.keys())
+print(test_generator.class_indices.keys())
 index = 0
 
 
 for _ in range(nb_samples):
-    # X_test, Y_test = test_generator.next()
-    # X_test, Y_test = test_generator._get_batches_of_transformed_samples(np.array([
-    #                                                                     index]))
-    # image_name = test_generator.filenames[index]
-    # test_file.append(image_name)
 
     index = next(test_generator.index_generator)
     X_test, Y_test = test_generator._get_batches_of_transformed_samples(index)
