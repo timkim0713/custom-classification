@@ -1,4 +1,4 @@
-﻿# custom-classification
+﻿# Custom Multiclass Classification from Crawling Images to Training
 
 ## Overview
 This project is divided into 2 parts.
