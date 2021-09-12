@@ -33,6 +33,12 @@ python preprocess_data.py
 python classifciation.py
 ```
 
+## Predict Unseen Image's Classification 
+
+```
+cd multiclass
+python predict.py
+```
 
 
 # Experiment and Result
@@ -45,6 +51,9 @@ Ran crawling.py 5 times using the following keywords (for 200 images per keyword
 ## Multiclass Classification
   <img src="/result.png" width="500" title="Confusion Matrix">
 
+
+## Prediction
+Choose an image of your own to test your classification on the model you have built. It will predict which class it belongs to.
 
 
 
