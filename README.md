@@ -1,4 +1,4 @@
-﻿# Custom Multiclass Classification from Crawling Images to Training
+﻿# Custom Multiclass Classification from Crawling Images and Training Custom Model to Predicting Classification 
 
 ## Overview
 This project is divided into 2 parts.
