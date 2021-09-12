@@ -1,10 +1,10 @@
 ﻿# Custom Multiclass Classification from Crawling Images and Training Custom Model to Predicting Classification 
 
 ## Overview
-This project is divided into 2 parts.
+This project is divided into 3 parts.
 I. Using Selenium to crawl hundreds of google images of desired keyword 
 II. Use those images to train your multiclass classification model. 
-
+III. Predict the classification of an image of your choice using the trained model.
 
 
 ### I. Crawling
@@ -15,7 +15,8 @@ Run this concurrently or multiple times to also crawl different keyword images (
 
 ### II. Custom Multiclass Classification Model
 Run preprocess_data.py to preprocess the images you have crawled from 'I. Crawling'.
-This will organize the images into train, val, test directories.
+This will organize the images into train, val, test directories. We used transfer learning model from ResNet50 and
+imagenet dataset to create our model.
 
 
 
