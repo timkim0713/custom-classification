@@ -1,4 +1,8 @@
-﻿# Custom Multiclass Classification from Crawling Images and Training Custom Model to Predicting Classification 
+﻿# Custom Multiclass Classification from Crawling Images to Predicting Classes 
+
+
+## Author
+Daekyung Kim [Personal Project]
 
 ## Overview
 This project is divided into 3 parts.
